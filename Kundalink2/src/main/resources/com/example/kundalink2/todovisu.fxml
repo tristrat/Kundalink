@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.kundalink2.TodolistController">
+   <children>
+      <TextField fx:id="txtfName" layoutX="272.0" layoutY="85.0" />
+      <DatePicker fx:id="dpDate" layoutX="272.0" layoutY="145.0" prefHeight="26.0" prefWidth="160.0" />
+      <TextArea fx:id="txtaComments" layoutX="272.0" layoutY="234.0" prefHeight="93.0" prefWidth="383.0" />
+      <Label fx:id="lblName" layoutX="277.0" layoutY="58.0" text="Name" />
+      <Label fx:id="lbldate" layoutX="277.0" layoutY="120.0" text="Date" />
+      <Label fx:id="lblComments" layoutX="275.0" layoutY="207.0" text="Comments" />
+      <ListView fx:id="lvLos" layoutX="48.0" layoutY="58.0" prefHeight="354.0" prefWidth="200.0" />
+      <Label fx:id="lblLos" layoutX="52.0" layoutY="27.0" text="Todo list">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblSd" layoutX="275.0" layoutY="27.0" text="Todo details">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnAddns" layoutX="48.0" layoutY="433.0" mnemonicParsing="false" onAction="#onNew" text="Add new Todo" />
+      <Button fx:id="btnEdit" layoutX="276.0" layoutY="335.0" mnemonicParsing="false" onAction="#onEdit" text="Edit" />
+      <Button fx:id="btnDelete" layoutX="322.0" layoutY="335.0" mnemonicParsing="false" onAction="#onDelete" text="Delete" />
+      <Button fx:id="btnCancel" layoutX="600.0" layoutY="336.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <Button fx:id="btnSave" layoutX="549.0" layoutY="336.0" mnemonicParsing="false" onAction="#onSave" text="Save" />
+      <Button fx:id="btnCalendar" layoutX="523.0" layoutY="433.0" mnemonicParsing="false" onAction="#onCalendarClicked" prefHeight="25.0" prefWidth="83.0" text="Calendar" />
+      <Button fx:id="btnBudget" layoutX="432.0" layoutY="433.0" mnemonicParsing="false" onAction="#onBudgetClicked" prefHeight="25.0" prefWidth="83.0" text="Budget" />
+   </children>
+</AnchorPane>
