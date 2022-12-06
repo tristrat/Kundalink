@@ -1,5 +1,6 @@
 package com.example.kundalink2;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,32 @@ public class DBManager {
             Statement myStmt = myConn.createStatement();
             String sql = "select * from student.todolist";
             ResultSet myRs = myStmt.executeQuery(sql);
+            while (myRs.next()) {
+                Todolist s = new Todolist(myRs.getInt("id"), myRs.getString("name"),
+                        myRs.getDate("birth").toLocalDate(),
+                        myRs.getString("comments")
+                );
+
+                todolistAll.add(s);
+            }
+            this.close(myConn, myStmt, myRs);
+            return todolistAll;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Todolist> loadTodoDate(LocalDate date) {
+        List<Todolist> todolistAll = new ArrayList<Todolist>();
+        Connection myConn = this.Connector();
+        PreparedStatement myStmt = null;
+        try {
+            String sql = "select * from student.todolist where birth=?";
+            myStmt = myConn.prepareStatement(sql);
+            myStmt.setString(1, String.valueOf(date));
+
+            ResultSet myRs = myStmt.executeQuery();
             while (myRs.next()) {
                 Todolist s = new Todolist(myRs.getInt("id"), myRs.getString("name"),
                         myRs.getDate("birth").toLocalDate(),

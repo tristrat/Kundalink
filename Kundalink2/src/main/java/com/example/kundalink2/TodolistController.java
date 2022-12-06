@@ -77,25 +77,19 @@ public class TodolistController implements Initializable {
     @FXML
     private TextField txtfName;
 
-    private static LocalDate date;
-
     DBManager manager;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         manager = new DBManager();
         lvLos.getSelectionModel().selectedItemProperty().addListener(e ->
                 displayStudentDetails(lvLos.getSelectionModel().getSelectedItem()));
-
         fetchStudents();
-        this.dpDate.setValue(LocalDate.of(2022,12,12));
     }
 
-    private void displayStudentDetails(Todolist selectedTodolist) {
+    public void displayStudentDetails(Todolist selectedTodolist) {
         if (selectedTodolist != null) {
             txtfName.setText(selectedTodolist.getName());
-
             dpDate.setValue(selectedTodolist.getBirth_date());
-
             txtaComments.setText(selectedTodolist.getComments());
 
         }
@@ -165,15 +159,10 @@ public class TodolistController implements Initializable {
     }
 
     public void onSave() {
-
-
-            int newid = lvLos.getItems().size() + 1;
+        int newid = lvLos.getItems().size() + 1;
         Todolist s = new Todolist(newid, txtfName.getText(), dpDate.getValue(), txtaComments.getText());// etape 1
-            manager.addTodolist(s);
-            fetchStudents();
-            //Average.setText(String.valueOf(manager.average()));
-
-
+        manager.addTodolist(s);
+        fetchStudents();
 
     }
     public void onEdit() {
@@ -201,9 +190,7 @@ public class TodolistController implements Initializable {
         manager.deleteTodolist(s);
         fetchStudents();
         this.txtfName.clear();
-
         this.dpDate.setValue(null);
-
         this.txtaComments.clear();
 
     }

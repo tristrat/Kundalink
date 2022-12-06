@@ -1,18 +1,27 @@
 package com.example.kundalink2;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FullCalendarView {
@@ -20,13 +29,17 @@ public class FullCalendarView {
     private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35);
     private VBox view;
     private Text calendarTitle;
+
+    private ListView<Todolist> lv;
     private YearMonth currentYearMonth;
+    DBManager manager;
 
     /**
      * Create a calendar view
      * @param yearMonth year month to create the calendar of
      */
     public FullCalendarView(YearMonth yearMonth){
+        manager = new DBManager();
         currentYearMonth = yearMonth;
         // Create the calendar grid pane
         GridPane calendar = new GridPane();
@@ -82,7 +95,7 @@ public class FullCalendarView {
         }
         // Populate the calendar with day numbers
         for (AnchorPaneNode ap : allCalendarDays) {
-            if (ap.getChildren().size() != 0) {
+            while(ap.getChildren().size() != 0){
                 ap.getChildren().remove(0);
             }
             Text txt = new Text(String.valueOf(calendarDate.getDayOfMonth()));
@@ -90,6 +103,23 @@ public class FullCalendarView {
             ap.setTopAnchor(txt, 5.0);
             ap.setLeftAnchor(txt, 5.0);
             ap.getChildren().add(txt);
+            List<Todolist> list = fetchTasks(calendarDate);
+            lv = new ListView<>();
+            lv.setOnMouseClicked(event -> {
+                try {
+                    handleLvClick();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            if (list != null) {
+                ObservableList<Todolist> students;
+                students = FXCollections.observableArrayList(list);
+                lv.setItems(students);
+            }
+            ap.setBottomAnchor(lv, 5.0);
+            lv.setPrefSize(100,60);
+            ap.getChildren().add(lv);
             calendarDate = calendarDate.plusDays(1);
         }
         // Change the title of the calendar
@@ -112,6 +142,11 @@ public class FullCalendarView {
         populateCalendar(currentYearMonth);
     }
 
+    public List<Todolist> fetchTasks(LocalDate date) {
+        List<Todolist> listTasks = manager.loadTodoDate(date);
+        return listTasks;
+    }
+
     public VBox getView() {
         return view;
     }
@@ -122,5 +157,17 @@ public class FullCalendarView {
 
     public void setAllCalendarDays(ArrayList<AnchorPaneNode> allCalendarDays) {
         this.allCalendarDays = allCalendarDays;
+    }
+
+    public void handleLvClick() throws IOException {
+        Todolist todo = lv.getSelectionModel().getSelectedItem();
+        Stage primaryStage = (Stage) lv.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("todovisu.fxml"));
+        Parent root = loader.load();
+        Scene todolist = new Scene(root, 700, 500);
+        primaryStage.setScene(todolist);
+        TodolistController controller = loader.getController();
+        controller.displayStudentDetails(todo);
+
     }
 }
