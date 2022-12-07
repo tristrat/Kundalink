@@ -68,7 +68,7 @@ public class TodolistController implements Initializable {
     private Label lbldate;
 
     @FXML
-    private ListView<Todolist> lvLos;
+    public ListView<Todolist> lvLos;
 
     @FXML
     private TextArea txtaComments;

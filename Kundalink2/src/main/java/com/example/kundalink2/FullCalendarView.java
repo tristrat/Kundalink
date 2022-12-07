@@ -30,7 +30,6 @@ public class FullCalendarView {
     private VBox view;
     private Text calendarTitle;
 
-    private ListView<Todolist> lv;
     private YearMonth currentYearMonth;
     DBManager manager;
 
@@ -104,10 +103,10 @@ public class FullCalendarView {
             ap.setLeftAnchor(txt, 5.0);
             ap.getChildren().add(txt);
             List<Todolist> list = fetchTasks(calendarDate);
-            lv = new ListView<>();
+            ListView<Todolist> lv = new ListView<>();
             lv.setOnMouseClicked(event -> {
                 try {
-                    handleLvClick();
+                    handleLvClick(lv);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -159,7 +158,8 @@ public class FullCalendarView {
         this.allCalendarDays = allCalendarDays;
     }
 
-    public void handleLvClick() throws IOException {
+    public void handleLvClick(ListView<Todolist> lv) throws IOException {
+        System.out.println("test");
         Todolist todo = lv.getSelectionModel().getSelectedItem();
         Stage primaryStage = (Stage) lv.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("todovisu.fxml"));
@@ -168,6 +168,7 @@ public class FullCalendarView {
         primaryStage.setScene(todolist);
         TodolistController controller = loader.getController();
         controller.displayStudentDetails(todo);
+        controller.lvLos.getSelectionModel().select(todo);
 
     }
 }
